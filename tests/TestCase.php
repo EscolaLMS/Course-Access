@@ -8,6 +8,8 @@ use EscolaLms\Auth\Tests\Models\Client;
 use EscolaLms\CourseAccess\EscolaLmsCourseAccessServiceProvider;
 use EscolaLms\Courses\EscolaLmsCourseServiceProvider;
 use EscolaLms\Courses\Tests\Models\User as UserTest;
+use EscolaLms\Scorm\EscolaLmsScormServiceProvider;
+use EscolaLms\Tags\EscolaLmsTagsServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\TestResponse;
@@ -36,6 +38,8 @@ class TestCase extends CoreTestCase
             PermissionServiceProvider::class,
             PassportServiceProvider::class,
             EscolaLmsCourseAccessServiceProvider::class,
+            EscolaLmsScormServiceProvider::class,
+            EscolaLmsTagsServiceProvider::class,
         ];
     }
 
