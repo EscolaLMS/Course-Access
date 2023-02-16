@@ -1,8 +1,6 @@
 name: Tests Code Coverage
 
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
     branches:
       - main
@@ -12,7 +10,7 @@ jobs:
   phpunit-code-coverage:
     runs-on: ubuntu-latest
     container:
-      image: escolalms/php:7.4
+      image: escolalms/php:8-work
 
     services:
       mysql:
@@ -27,7 +25,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Instantiate package
+      - name: install git
         run: apt-get install git -y
 
       - name: Instantiate package
@@ -37,10 +35,7 @@ jobs:
         run: cp -r env/codecov/. .
 
       - name: Update composer
-        run: COMPOSER_ROOT_VERSION=0.9.9 composer update
-
-      - name: require phpunit-github-actions-printer
-        run: composer require --dev mheap/phpunit-github-actions-printer
+        run: composer update
 
       - name: Clear config
         run: vendor/bin/testbench config:clear
@@ -48,10 +43,13 @@ jobs:
       - name: Publish things
         run: vendor/bin/testbench migrate:fresh
 
+      - name: require phpunit-github-actions-printer
+        run: COMPOSER_ROOT_VERSION=0.9.9 composer require --dev mheap/phpunit-github-actions-printer
+
       - name: Run tests
         run: XDEBUG_MODE=coverage vendor/bin/phpunit  --coverage-clover coverage.xml --printer mheap\\GithubActionsReporter\\Printer
 
-      - name: codecov upload
+      - name: Code Coverage upload
         uses: codecov/codecov-action@v1
 
       - name: Setup Code Climate test-reporter
@@ -65,4 +63,4 @@ jobs:
       - name: Upload
         run: ./cc-test-reporter upload-coverage -i codeclimate.0.json
         env:
-          CC_TEST_REPORTER_ID: 54a86c346830001714906f7c6b45a99aa78df688d5e9a20a5b4b609c65dcc209
+          CC_TEST_REPORTER_ID: 24d39b073fa0d5fd489f641f77013cc86b5b70d16dcd364d0e8498bd532da062
