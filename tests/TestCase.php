@@ -33,11 +33,11 @@ class TestCase extends CoreTestCase
     {
         return [
             ...parent::getPackageProviders($app),
+            EscolaLmsCourseAccessServiceProvider::class,
             EscolaLmsAuthServiceProvider::class,
             EscolaLmsCourseServiceProvider::class,
             PermissionServiceProvider::class,
             PassportServiceProvider::class,
-            EscolaLmsCourseAccessServiceProvider::class,
             EscolaLmsScormServiceProvider::class,
             EscolaLmsTagsServiceProvider::class,
         ];
