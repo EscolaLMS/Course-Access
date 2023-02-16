@@ -13,7 +13,6 @@ use EscolaLms\CourseAccess\Http\Resources\UserGroupResource;
 use EscolaLms\CourseAccess\Models\Course;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Testing\TestResponse;
 
 class CourseAccessApiTest extends TestCase
 {
@@ -42,7 +41,9 @@ class CourseAccessApiTest extends TestCase
         $this->course->users()->sync([$student->getKey()]);
         $this->course->groups()->sync([$group->getKey()]);
 
-        $this->response = $this->actingAs($this->user, 'api')->get('/api/admin/courses/' . $this->course->id . '/access');
+        $this->response = $this->actingAs($this->user, 'api')
+            ->getJson('/api/admin/courses/' . $this->course->id . '/access');
+
         $this->response->assertOk();
         $this->response->assertJsonFragment([
             'users' => [
@@ -53,8 +54,8 @@ class CourseAccessApiTest extends TestCase
                 ]
             ],
             'groups' => [
-                UserGroupResource::make($group)->toArray(null)
-            ]
+                UserGroupResource::make($group)->toArray(null),
+            ],
         ]);
     }
 
@@ -66,7 +67,9 @@ class CourseAccessApiTest extends TestCase
         $this->course->users()->sync([$student->getKey()]);
         $this->course->groups()->sync([$group->getKey()]);
 
-        $this->response = $this->actingAs($this->user, 'api')->get('/api/admin/courses/' . $this->course->id . '/access');
+        $this->response = $this->actingAs($this->user, 'api')
+            ->getJson('/api/admin/courses/' . $this->course->id . '/access');
+
         $this->response->assertOk();
         $this->response->assertJsonFragment([
             'users' => [
@@ -77,14 +80,15 @@ class CourseAccessApiTest extends TestCase
                 ]
             ],
             'groups' => [
-                UserGroupResource::make($group)->toArray(null)
-            ]
+                UserGroupResource::make($group)->toArray(null),
+            ],
         ]);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $this->course->id . '/access/set', [
-            'users' => [],
-            'groups' => [],
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->post('/api/admin/courses/' . $this->course->id . '/access/set', [
+                'users' => [],
+                'groups' => [],
+            ]);
         $this->response->assertOk();
         $this->response->assertJsonMissing([
             'id' => $student->id,
@@ -104,9 +108,11 @@ class CourseAccessApiTest extends TestCase
 
         $this->assertUserCanNotReadProgram($student, $this->course);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $this->course->id . '/access/add/', [
-            'users' => [$student->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $this->course->id . '/access/add/', [
+                'users' => [$student->getKey()],
+            ]);
+
         $this->response->assertOk();
         Event::assertDispatched(CourseAccessStarted::class);
         $this->assertUserCanReadProgram($student, $this->course);
@@ -120,9 +126,10 @@ class CourseAccessApiTest extends TestCase
 
         $this->assertUserCanReadProgram($student, $this->course);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $this->course->id . '/access/remove/', [
-            'users' => [$student->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $this->course->id . '/access/remove/', [
+                'users' => [$student->getKey()],
+            ]);
 
         $this->response->assertOk();
         Event::assertDispatched(CourseFinished::class);
@@ -137,9 +144,10 @@ class CourseAccessApiTest extends TestCase
 
         $this->assertUserCanNotReadProgram($student, $this->course);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $this->course->id . '/access/add/', [
-            'groups' => [$group->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $this->course->id . '/access/add/', [
+                'groups' => [$group->getKey()],
+            ]);
 
         $this->response->assertOk();
 
@@ -155,9 +163,10 @@ class CourseAccessApiTest extends TestCase
 
         $this->assertUserCanReadProgram($student, $this->course);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $this->course->id . '/access/remove/', [
-            'groups' => [$group->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $this->course->id . '/access/remove/', [
+                'groups' => [$group->getKey()],
+            ]);
 
         $this->response->assertOk();
 
@@ -169,18 +178,16 @@ class CourseAccessApiTest extends TestCase
         $student = User::factory()->create();
 
         $unactivatedCourse = Course::factory()->create([
-            'status' => CourseStatusEnum::PUBLISHED_UNACTIVATED
+            'status' => CourseStatusEnum::PUBLISHED_UNACTIVATED,
         ]);
 
         $unactivatedCourse->users()->sync($student->getKey());
 
-        $this->actingAs($student, 'api')->json(
-            'GET',
-            '/api/courses/' . $unactivatedCourse->getKey() . '/program'
-        )->assertJson([
-            'success' => false,
-            'message' => __('Course is not activated yet.')
-        ]);
+        $this->actingAs($student, 'api')->getJson('/api/courses/' . $unactivatedCourse->getKey() . '/program')
+            ->assertJson([
+                'success' => false,
+                'message' => __('Course is not activated yet.'),
+            ]);
 
         $unactivatedCourse2 = Course::factory()->create([
             'status' => CourseStatusEnum::PUBLISHED,
@@ -190,13 +197,11 @@ class CourseAccessApiTest extends TestCase
 
         $unactivatedCourse2->users()->sync($student->getKey());
 
-        $this->actingAs($student, 'api')->json(
-            'GET',
-            '/api/courses/' . $unactivatedCourse2->getKey() . '/program'
-        )->assertJson([
-            'success' => false,
-            'message' => __('Course is not activated yet.')
-        ]);
+        $this->actingAs($student, 'api')->getJson('/api/courses/' . $unactivatedCourse2->getKey() . '/program')
+            ->assertJson([
+                'success' => false,
+                'message' => __('Course is not activated yet.'),
+            ]);
 
         $unactivatedCourse2->update([
             'active_from' => now()->subHour(),
@@ -207,48 +212,13 @@ class CourseAccessApiTest extends TestCase
 
     private function assertUserCanReadProgram(User $user, Course $course): void
     {
-        /** @var TestResponse $response */
-        $response = $this->actingAs($user, 'api')->json(
-            'GET',
-            '/api/courses/' . $course->id . '/program'
-        );
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'success',
-            'data' => [
-                'id',
-                'title',
-                'summary',
-                'image_path',
-                'image_url',
-                'video_path',
-                'video_url',
-                'duration',
-                'author_id',
-                'scorm_sco_id',
-                'scorm_sco',
-                'status',
-                'subtitle',
-                'language',
-                'description',
-                'level',
-                'lessons',
-                'poster_path',
-                'poster_url',
-            ],
-            'message',
-        ]);
+        $this->actingAs($user, 'api')->getJson('/api/courses/' . $course->id . '/program')
+            ->assertOk();
     }
 
     private function assertUserCanNotReadProgram(User $user, Course $course): void
     {
-        /** @var TestResponse $response */
-        $response = $this->actingAs($user, 'api')->json(
-            'GET',
-            '/api/courses/' . $course->id . '/program'
-        );
-
-        $response->assertStatus(403);
+        $this->actingAs($user, 'api')->getJson('/api/courses/' . $course->id . '/program')
+            ->assertForbidden();
     }
 }

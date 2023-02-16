@@ -39,9 +39,10 @@ class AccessNotificationsTest extends TestCase
 
         $student = User::factory()->create();
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $course->id . '/access/add/', [
-            'users' => [$student->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $course->id . '/access/add/', [
+                'users' => [$student->getKey()],
+            ]);
 
         $this->response->assertOk();
         Event::assertDispatched(CourseAccessStarted::class);
@@ -64,9 +65,10 @@ class AccessNotificationsTest extends TestCase
         $student = User::factory()->create();
         $student->courses()->save($course);
 
-        $this->response = $this->actingAs($this->user, 'api')->post('/api/admin/courses/' . $course->id . '/access/remove/', [
-            'users' => [$student->getKey()]
-        ]);
+        $this->response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/admin/courses/' . $course->id . '/access/remove/', [
+                'users' => [$student->getKey()],
+            ]);
 
         $this->response->assertOk();
 
