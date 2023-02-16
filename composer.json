@@ -21,7 +21,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "EscolaLms\\CourseAccess\\": "src/",
+            "EscolaLms\\CourseAccess\\": "src",
             "EscolaLms\\CourseAccess\\Tests\\": "tests",
             "EscolaLms\\CourseAccess\\Database\\Factories\\": "database/factories",
             "EscolaLms\\CourseAccess\\Database\\Seeders\\": "database/seeders"
@@ -35,6 +35,7 @@
         }
     },
     "config": {
+        "optimize-autoloader": false,
         "preferred-install": "dist",
         "sort-packages": true
     },
