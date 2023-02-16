@@ -8,7 +8,7 @@ use EscolaLms\Courses\Events\CourseAccessStarted;
 use EscolaLms\Courses\Events\CourseAssigned;
 use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Courses\Events\CourseUnassigned;
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 
 class CourseAccessService implements CourseAccessServiceContract
 {

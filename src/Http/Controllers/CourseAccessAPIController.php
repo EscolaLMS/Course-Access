@@ -10,7 +10,7 @@ use EscolaLms\CourseAccess\Http\Requests\RemoveAccessAPIRequest;
 use EscolaLms\CourseAccess\Http\Requests\SetAccessAPIRequest;
 use EscolaLms\CourseAccess\Http\Resources\UserGroupResource;
 use EscolaLms\CourseAccess\Http\Resources\UserShortResource;
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 use EscolaLms\CourseAccess\Services\Contracts\CourseAccessServiceContract;
 use Illuminate\Http\JsonResponse;
 

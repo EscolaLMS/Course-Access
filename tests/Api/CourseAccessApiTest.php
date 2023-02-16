@@ -10,7 +10,7 @@ use EscolaLms\Courses\Enum\CourseStatusEnum;
 use EscolaLms\Courses\Events\CourseAccessStarted;
 use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\CourseAccess\Http\Resources\UserGroupResource;
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\TestResponse;
@@ -95,53 +95,6 @@ class CourseAccessApiTest extends TestCase
             'id' => $group->id,
             'name' => $group->name,
         ]);
-    }
-
-    private function assertUserCanReadProgram(User $user, Course $course): void
-    {
-        /** @var TestResponse $response */
-        $response = $this->actingAs($user, 'api')->json(
-            'GET',
-            '/api/courses/' . $course->id . '/program'
-        );
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'success',
-            'data' => [
-                'id',
-                'title',
-                'summary',
-                'image_path',
-                'image_url',
-                'video_path',
-                'video_url',
-                'duration',
-                'author_id',
-                'scorm_sco_id',
-                'scorm_sco',
-                'status',
-                'subtitle',
-                'language',
-                'description',
-                'level',
-                'lessons',
-                'poster_path',
-                'poster_url',
-            ],
-            'message',
-        ]);
-    }
-
-    private function assertUserCanNotReadProgram(User $user, Course $course): void
-    {
-        /** @var TestResponse $response */
-        $response = $this->actingAs($user, 'api')->json(
-            'GET',
-            '/api/courses/' . $course->id . '/program'
-        );
-
-        $response->assertStatus(403);
     }
 
     public function testAddUserAccess(): void
@@ -250,5 +203,52 @@ class CourseAccessApiTest extends TestCase
             'active_to' => now()->addDay(),
         ]);
         $this->assertUserCanReadProgram($student, $unactivatedCourse2);
+    }
+
+    private function assertUserCanReadProgram(User $user, Course $course): void
+    {
+        /** @var TestResponse $response */
+        $response = $this->actingAs($user, 'api')->json(
+            'GET',
+            '/api/courses/' . $course->id . '/program'
+        );
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'id',
+                'title',
+                'summary',
+                'image_path',
+                'image_url',
+                'video_path',
+                'video_url',
+                'duration',
+                'author_id',
+                'scorm_sco_id',
+                'scorm_sco',
+                'status',
+                'subtitle',
+                'language',
+                'description',
+                'level',
+                'lessons',
+                'poster_path',
+                'poster_url',
+            ],
+            'message',
+        ]);
+    }
+
+    private function assertUserCanNotReadProgram(User $user, Course $course): void
+    {
+        /** @var TestResponse $response */
+        $response = $this->actingAs($user, 'api')->json(
+            'GET',
+            '/api/courses/' . $course->id . '/program'
+        );
+
+        $response->assertStatus(403);
     }
 }

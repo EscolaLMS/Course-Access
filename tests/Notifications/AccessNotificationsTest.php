@@ -9,7 +9,7 @@ use EscolaLms\Courses\Enum\CourseStatusEnum;
 use EscolaLms\Courses\Events\CourseAccessStarted;
 use EscolaLms\Courses\Events\CourseAssigned;
 use EscolaLms\Courses\Events\CourseUnassigned;
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 use EscolaLms\Courses\Models\User;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;

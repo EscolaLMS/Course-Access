@@ -27,7 +27,7 @@ class TestCase extends CoreTestCase
         Passport::useClientModel(Client::class);
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ...parent::getPackageProviders($app),

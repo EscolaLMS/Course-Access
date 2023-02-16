@@ -2,7 +2,7 @@
 
 namespace EscolaLms\CourseAccess\Http\Requests\Abstracts;
 
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

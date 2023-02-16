@@ -2,7 +2,7 @@
 
 namespace EscolaLms\CourseAccess\Services\Contracts;
 
-use EscolaLms\Courses\Models\Course;
+use EscolaLms\CourseAccess\Models\Course;
 
 interface CourseAccessServiceContract
 {
