@@ -13,6 +13,12 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::post('{id}/access/remove', [CourseAccessAPIController::class, 'remove']);
             Route::post('{id}/access/set', [CourseAccessAPIController::class, 'set']);
         });
+
+        Route::prefix('course-access-enquiries')->group(function () {
+            Route::get(null, [CourseAccessEnquiryApiAdminController::class, 'list']);
+            Route::delete('{id}', [CourseAccessEnquiryApiAdminController::class, 'delete']);
+            Route::post('approve/{id}', [CourseAccessEnquiryApiAdminController::class, 'approve']);
+        });
     });
 
     Route::prefix('course-access-enquiries')->group(function () {
