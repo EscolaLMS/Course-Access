@@ -45,7 +45,7 @@
                 ],
                 "summary": "Add users and groups with access to the course",
                 "description": "Add users and groups with access to the course",
-                "operationId": "a3cd19b7467fd77772de88921085085e",
+                "operationId": "1f7953bbd09801ae08e9aa8bc8523c66",
                 "parameters": [
                     {
                         "name": "id",
@@ -103,7 +103,7 @@
                 ],
                 "summary": "Remove users and groups with access to the course",
                 "description": "Remove users and groups with access to the course",
-                "operationId": "5fb4c4d3f8b60926ccda54d50ff3020a",
+                "operationId": "553d4834b6ac01da1ee8956af69d818a",
                 "parameters": [
                     {
                         "name": "id",
@@ -161,7 +161,7 @@
                 ],
                 "summary": "Set users and groups with access to the course",
                 "description": "Set users and groups with access to the course",
-                "operationId": "4b7f8a9532d08ae3d8bd529ba7296a63",
+                "operationId": "e51b1d75dacfc712afd9e10fc8cd5099",
                 "parameters": [
                     {
                         "name": "id",
@@ -210,6 +210,242 @@
                         "passport": []
                     }
                 ]
+            }
+        },
+        "/api/course-access-enquiries": {
+            "get": {
+                "tags": [
+                    "Course Access"
+                ],
+                "summary": "Get my course access enquiries",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "approved"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CourseAccessEnquiryResource"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Course Access"
+                ],
+                "summary": "Store a newly Course Access Enqiury",
+                "description": "Store Course Access Enqiury",
+                "operationId": "da2642322f963ed81bff2cbfe18c569e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCourseAccessEnquiryApiRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/CourseAccessEnquiryResource"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/course-access-enquiries/{id}": {
+            "delete": {
+                "tags": [
+                    "Course Access"
+                ],
+                "summary": "Remove the specified Course Access Enquiry",
+                "description": "Delete Course Access Enquiry",
+                "operationId": "8131977a775f9fd097e4c6f38596f7dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CreateCourseAccessEnquiryApiRequest": {
+                "required": [
+                    "course_id"
+                ],
+                "properties": {
+                    "course_id": {
+                        "description": "course_id",
+                        "type": "number"
+                    },
+                    "data": {
+                        "description": "data",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CourseAccessEnquiryResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "created_at": {
+                        "description": "created_at",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "course": {
+                        "$ref": "#/components/schemas/CourseShortResource"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserShortResource"
+                    },
+                    "status": {
+                        "description": "status",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "status",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CourseShortResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserShortResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "email",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
             }
         }
     }
