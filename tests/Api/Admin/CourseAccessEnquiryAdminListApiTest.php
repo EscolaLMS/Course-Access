@@ -75,7 +75,7 @@ class CourseAccessEnquiryAdminListApiTest extends TestCase
             ]);
     }
 
-    private function adminFilterDataProvider(): array
+    public function adminFilterDataProvider(): array
     {
         return [
             [
