@@ -3,8 +3,8 @@
 Course access package
 
 [![swagger](https://img.shields.io/badge/documentation-swagger-green)](https://escolalms.github.io/Course-Access/)
-[![codecov](https://codecov.io/gh/EscolaLMS/CourseAccess/branch/main/graph/badge.svg?token=NRAN4R8AGZ)](https://codecov.io/gh/EscolaLMS/Course-Access)
-[![phpunit](https://github.com/EscolaLMS/CourseAccess/actions/workflows/test.yml/badge.svg)](https://github.com/EscolaLMS/CourseAccess/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/EscolaLMS/Course-Access/branch/main/graph/badge.svg?token=NRAN4R8AGZ)](https://codecov.io/gh/EscolaLMS/Course-Access)
+[![phpunit](https://github.com/EscolaLMS/Course-Access/actions/workflows/test.yml/badge.svg)](https://github.com/EscolaLMS/Course-Access/actions/workflows/test.yml)
 [![downloads](https://img.shields.io/packagist/dt/escolalms/course-access)](https://packagist.org/packages/escolalms/course-access)
 [![downloads](https://img.shields.io/packagist/v/escolalms/course-access)](https://packagist.org/packages/escolalms/course-access)
 [![downloads](https://img.shields.io/packagist/l/escolalms/course-access)](https://packagist.org/packages/escolalms/course-access)
