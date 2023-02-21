@@ -2,11 +2,12 @@
 
 namespace EscolaLms\CourseAccess\Http\Resources;
 
+use EscolaLms\CourseAccess\Models\Course;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @OA\Schema(
- *      schema="UserShortResource",
+ *      schema="CourseShortResource",
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -17,22 +18,20 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="name",
  *          type="string"
  *      ),
- *      @OA\Property(
- *          property="email",
- *          description="email",
- *          type="string"
- *      ),
  * )
  *
  */
-class UserShortResource extends JsonResource
+
+/**
+ * @mixin Course
+ */
+class CourseShortResource extends JsonResource
 {
     public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
         ];
     }
 }

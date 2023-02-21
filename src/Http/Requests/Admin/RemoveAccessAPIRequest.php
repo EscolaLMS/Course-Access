@@ -1,11 +1,11 @@
 <?php
 
-namespace EscolaLms\CourseAccess\Http\Requests;
+namespace EscolaLms\CourseAccess\Http\Requests\Admin;
 
-use EscolaLms\CourseAccess\Http\Requests\Abstracts\CourseAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\Abstracts\CourseAccessAPIRequest;
 use Illuminate\Validation\Rule;
 
-class AddAccessAPIRequest extends CourseAccessAPIRequest
+class RemoveAccessAPIRequest extends CourseAccessAPIRequest
 {
     public function rules(): array
     {

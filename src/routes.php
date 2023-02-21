@@ -1,11 +1,23 @@
 <?php
 
-use EscolaLms\CourseAccess\Http\Controllers\CourseAccessAPIController;
+use EscolaLms\CourseAccess\Http\Controllers\Admin\CourseAccessAPIController;
+use EscolaLms\CourseAccess\Http\Controllers\Admin\CourseAccessEnquiryApiAdminController;
+use EscolaLms\CourseAccess\Http\Controllers\CourseAccessEnquiryApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth:api'], 'prefix' => 'api/admin'], function () {
-    Route::get('courses/{id}/access', [CourseAccessAPIController::class, 'list']);
-    Route::post('courses/{id}/access/add', [CourseAccessAPIController::class, 'add']);
-    Route::post('courses/{id}/access/remove', [CourseAccessAPIController::class, 'remove']);
-    Route::post('courses/{id}/access/set', [CourseAccessAPIController::class, 'set']);
+Route::prefix('api')->middleware(['auth:api'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::prefix('courses')->group(function () {
+            Route::get('{id}/access', [CourseAccessAPIController::class, 'list']);
+            Route::post('{id}/access/add', [CourseAccessAPIController::class, 'add']);
+            Route::post('{id}/access/remove', [CourseAccessAPIController::class, 'remove']);
+            Route::post('{id}/access/set', [CourseAccessAPIController::class, 'set']);
+        });
+    });
+
+    Route::prefix('course-access-enquiries')->group(function () {
+        Route::get(null, [CourseAccessEnquiryApiController::class, 'list']);
+        Route::post(null, [CourseAccessEnquiryApiController::class, 'create']);
+        Route::delete('{id}', [CourseAccessEnquiryApiController::class, 'delete']);
+    });
 });

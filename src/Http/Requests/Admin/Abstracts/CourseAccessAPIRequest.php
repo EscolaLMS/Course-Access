@@ -1,6 +1,6 @@
 <?php
 
-namespace EscolaLms\CourseAccess\Http\Requests\Abstracts;
+namespace EscolaLms\CourseAccess\Http\Requests\Admin\Abstracts;
 
 use EscolaLms\CourseAccess\Models\Course;
 use Illuminate\Foundation\Http\FormRequest;
