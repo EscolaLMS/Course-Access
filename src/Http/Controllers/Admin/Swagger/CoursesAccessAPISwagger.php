@@ -1,11 +1,11 @@
 <?php
 
-namespace EscolaLms\CourseAccess\Http\Controllers\Swagger;
+namespace EscolaLms\CourseAccess\Http\Controllers\Admin\Swagger;
 
-use EscolaLms\CourseAccess\Http\Requests\AddAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\ListAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\RemoveAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\SetAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\AddAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\ListAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\RemoveAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\SetAccessAPIRequest;
 use Illuminate\Http\JsonResponse;
 
 interface CoursesAccessAPISwagger

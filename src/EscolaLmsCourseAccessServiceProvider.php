@@ -2,7 +2,12 @@
 
 namespace EscolaLms\CourseAccess;
 
+use EscolaLms\CourseAccess\Providers\AuthServiceProvider;
+use EscolaLms\CourseAccess\Repositories\Contracts\CourseAccessEnquiryRepositoryContract;
+use EscolaLms\CourseAccess\Repositories\CourseAccessEnquiryRepository;
+use EscolaLms\CourseAccess\Services\Contracts\CourseAccessEnquiryServiceContract;
 use EscolaLms\CourseAccess\Services\Contracts\CourseAccessServiceContract;
+use EscolaLms\CourseAccess\Services\CourseAccessEnquiryService;
 use EscolaLms\CourseAccess\Services\CourseAccessService;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,9 +18,12 @@ class EscolaLmsCourseAccessServiceProvider extends ServiceProvider
 {
     public const SERVICES = [
         CourseAccessServiceContract::class => CourseAccessService::class,
+        CourseAccessEnquiryServiceContract::class => CourseAccessEnquiryService::class,
     ];
 
-    public const REPOSITORIES = [];
+    public const REPOSITORIES = [
+        CourseAccessEnquiryRepositoryContract::class => CourseAccessEnquiryRepository::class,
+    ];
 
     public $singletons = self::SERVICES + self::REPOSITORIES;
 
@@ -27,5 +35,6 @@ class EscolaLmsCourseAccessServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->app->register(AuthServiceProvider::class);
     }
 }

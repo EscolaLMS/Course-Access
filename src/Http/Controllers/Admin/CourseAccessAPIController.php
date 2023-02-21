@@ -1,13 +1,13 @@
 <?php
 
-namespace EscolaLms\CourseAccess\Http\Controllers;
+namespace EscolaLms\CourseAccess\Http\Controllers\Admin;
 
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
-use EscolaLms\CourseAccess\Http\Controllers\Swagger\CoursesAccessAPISwagger;
-use EscolaLms\CourseAccess\Http\Requests\AddAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\ListAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\RemoveAccessAPIRequest;
-use EscolaLms\CourseAccess\Http\Requests\SetAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Controllers\Admin\Swagger\CoursesAccessAPISwagger;
+use EscolaLms\CourseAccess\Http\Requests\Admin\AddAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\ListAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\RemoveAccessAPIRequest;
+use EscolaLms\CourseAccess\Http\Requests\Admin\SetAccessAPIRequest;
 use EscolaLms\CourseAccess\Http\Resources\UserGroupResource;
 use EscolaLms\CourseAccess\Http\Resources\UserShortResource;
 use EscolaLms\CourseAccess\Models\Course;
