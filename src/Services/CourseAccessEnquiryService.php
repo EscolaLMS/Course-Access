@@ -25,8 +25,7 @@ class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
     public function __construct(
         CourseAccessEnquiryRepositoryContract $repository,
         CourseAccessService $courseAccessService
-    )
-    {
+    ) {
         $this->repository = $repository;
         $this->courseAccessService = $courseAccessService;
     }

@@ -125,7 +125,7 @@ interface CourseAccessEnquiryApiSwagger
      *      path="/api/course-access-enquiries/{id}",
      *      summary="Remove the specified Course Access Enquiry",
      *      tags={"Course Access"},
-     *      description="Delete course Access Enquiry",
+     *      description="Delete Course Access Enquiry",
      *      security={
      *          {"passport": {}},
      *      },
