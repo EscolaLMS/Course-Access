@@ -79,7 +79,9 @@ class CourseAccessEnquiryCreateApiTest extends TestCase
         ])->assertCreated();
 
         Event::assertDispatched(function (CourseAccessEnquiryAdminCreatedEvent $event) {
-            return $event->user->hasPermissionTo(CourseAccessPermissionEnum::APPROVE_COURSE_ACCESS_ENQUIRY);
+            $this->assertTrue($event->getUser()->hasPermissionTo(CourseAccessPermissionEnum::APPROVE_COURSE_ACCESS_ENQUIRY));
+            $this->assertEquals($this->course->getKey(), $event->getCourseAccessEnquiry()->course_id);
+            return true;
         });
     }
 }

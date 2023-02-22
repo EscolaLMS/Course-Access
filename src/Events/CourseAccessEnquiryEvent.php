@@ -19,4 +19,14 @@ abstract class CourseAccessEnquiryEvent
         $this->user = $user;
         $this->courseAccessEnquiry = $courseAccessEnquiry;
     }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getCourseAccessEnquiry(): CourseAccessEnquiry
+    {
+        return $this->courseAccessEnquiry;
+    }
 }
