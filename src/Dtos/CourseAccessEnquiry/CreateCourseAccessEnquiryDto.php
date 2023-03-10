@@ -13,7 +13,7 @@ class CreateCourseAccessEnquiryDto extends CourseAccessEnquiryDto implements Ins
         return new static(
             $request->input('course_id'),
             auth()->id(),
-            $request->has('data') ? json_decode($request->input('data'), true) : [],
+            $request->input('data', []),
             EnquiryStatusEnum::PENDING,
         );
     }

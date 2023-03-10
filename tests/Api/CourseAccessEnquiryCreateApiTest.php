@@ -38,13 +38,21 @@ class CourseAccessEnquiryCreateApiTest extends TestCase
     {
         Event::fake([CourseAccessEnquiryStudentCreatedEvent::class]);
 
-        $data = json_encode(['field1' => 'value_1']);
+        $data = [
+            'field1' => 'value_1',
+            'field2' => 'value_2',
+            'field3' => [
+                'field3_1' => 'value_3'
+            ],
+        ];
 
         $this->actingAs($this->student, 'api')
             ->postJson('api/course-access-enquiries', [
                 'course_id' => $this->course->getKey(),
                 'data' => $data,
-            ])->assertCreated();
+            ])
+            ->assertCreated()
+            ->assertJsonFragment(['data' => $data]);
 
         $this->assertDatabaseHas('course_access_enquiries', [
             'course_id' => $this->course->getKey(),

@@ -35,7 +35,7 @@ class CreateCourseAccessEnquiryApiRequest extends FormRequest
     {
         return [
             'course_id' => ['required', 'integer', 'exists:courses,id'],
-            'data' => ['sometimes', 'json'],
+            'data' => ['sometimes', 'array'],
         ];
     }
 
