@@ -12,4 +12,5 @@ interface CourseAccessServiceContract
     public function removeAccessForGroups(Course $course, array $groups = []): void;
     public function setAccessForUsers(Course $course, array $users = []): void;
     public function setAccessForGroups(Course $course, array $groups = []): void;
+    public function getUserCourseIds(int $userId): array;
 }
