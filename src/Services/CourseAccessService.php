@@ -9,6 +9,7 @@ use EscolaLms\Courses\Events\CourseAssigned;
 use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Courses\Events\CourseUnassigned;
 use EscolaLms\CourseAccess\Models\Course;
+use EscolaLms\Courses\Models\CourseUserPivot;
 
 class CourseAccessService implements CourseAccessServiceContract
 {
@@ -52,6 +53,11 @@ class CourseAccessService implements CourseAccessServiceContract
     public function setAccessForGroups(Course $course, array $groups = []): void
     {
         $course->groups()->sync($groups);
+    }
+
+    public function getUserCourseIds(int $userId): array
+    {
+        return CourseUserPivot::where('user_id', $userId)->pluck('course_id')->toArray();
     }
 
     private function dispatchEventForUsersAttachedToCourse(Course $course, array $users = []): void

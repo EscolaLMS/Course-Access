@@ -1,6 +1,7 @@
 <?php
 
 use EscolaLms\CourseAccess\Http\Controllers\Admin\CourseAccessAPIController;
+use EscolaLms\CourseAccess\Http\Controllers\CourseAccessApiController as CourseAccessApiStudentController;
 use EscolaLms\CourseAccess\Http\Controllers\Admin\CourseAccessEnquiryApiAdminController;
 use EscolaLms\CourseAccess\Http\Controllers\CourseAccessEnquiryApiController;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,9 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
         Route::get(null, [CourseAccessEnquiryApiController::class, 'list']);
         Route::post(null, [CourseAccessEnquiryApiController::class, 'create']);
         Route::delete('{id}', [CourseAccessEnquiryApiController::class, 'delete']);
+    });
+
+    Route::prefix('courses')->group(function () {
+        Route::get('my', [CourseAccessApiStudentController::class, 'getMyCourseIds']);
     });
 });

@@ -3,6 +3,7 @@
 namespace EscolaLms\CourseAccess\Tests\Api;
 
 use EscolaLms\Auth\Models\Group;
+use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\Courses\Tests\Models\User;
 use EscolaLms\CourseAccess\Tests\TestCase;
 use EscolaLms\Courses\Database\Seeders\CoursesPermissionSeeder;
@@ -16,15 +17,14 @@ use Illuminate\Support\Facades\Notification;
 
 class CourseAccessApiTest extends TestCase
 {
+    use CreatesUsers;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed(CoursesPermissionSeeder::class);
 
-        $this->user = config('auth.providers.users.model')::factory()->create();
-        $this->user->guard_name = 'api';
-        $this->user->assignRole('tutor');
+        $this->user = $this->makeInstructor();
         $this->course = Course::factory()->create([
             'status' => CourseStatusEnum::PUBLISHED,
         ]);
@@ -208,6 +208,21 @@ class CourseAccessApiTest extends TestCase
             'active_to' => now()->addDay(),
         ]);
         $this->assertUserCanReadProgram($student, $unactivatedCourse2);
+    }
+
+    public function testGetMyCourseIds(): void
+    {
+        $student = $this->makeStudent();
+
+        $this->actingAs($student, 'api')->getJson('api/courses/my')
+            ->assertOk()
+            ->assertJsonCount(0, 'data.ids');
+
+        $this->course->users()->sync($student);
+
+        $this->actingAs($student, 'api')->getJson('api/courses/my')
+            ->assertOk()
+            ->assertJsonFragment( ['ids' => [$this->course->getKey()]]);
     }
 
     private function assertUserCanReadProgram(User $user, Course $course): void
