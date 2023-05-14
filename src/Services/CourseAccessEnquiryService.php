@@ -3,6 +3,7 @@
 namespace EscolaLms\CourseAccess\Services;
 
 use EscolaLms\Auth\Models\User;
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Dtos\PaginationDto;
 use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use EscolaLms\CourseAccess\Dtos\CourseAccessEnquiry\CreateCourseAccessEnquiryDto;
@@ -24,8 +25,9 @@ class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
 
     public function __construct(
         CourseAccessEnquiryRepositoryContract $repository,
-        CourseAccessService $courseAccessService
-    ) {
+        CourseAccessService                   $courseAccessService
+    )
+    {
         $this->repository = $repository;
         $this->courseAccessService = $courseAccessService;
     }
@@ -38,9 +40,12 @@ class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
         return $this->repository->findByCriteria($criteria, $paginationDto->getLimit());
     }
 
-    public function findAll(CriteriaDto $criteriaDto, PaginationDto $paginationDto): LengthAwarePaginator
+    public function findAll(CriteriaDto $criteriaDto, PaginationDto $paginationDto, ?OrderDto $orderDto = null, ?int $perPage = 20): LengthAwarePaginator
     {
-        return $this->repository->findByCriteria($criteriaDto->toArray(), $paginationDto->getLimit());
+        return $this->repository
+            ->queryWithAppliedCriteria($criteriaDto->toArray())
+            ->orderBy($orderDto?->getOrderBy() ?? 'id', $orderDto->getOrder() ?? 'ASC')
+            ->paginate($perPage);
     }
 
     /**
@@ -78,6 +83,6 @@ class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
     {
         User::permission(CourseAccessPermissionEnum::APPROVE_COURSE_ACCESS_ENQUIRY)
             ->get()
-            ->each(fn (User $admin) => event(new CourseAccessEnquiryAdminCreatedEvent($admin, $courseAccessEnquiry)));
+            ->each(fn(User $admin) => event(new CourseAccessEnquiryAdminCreatedEvent($admin, $courseAccessEnquiry)));
     }
 }

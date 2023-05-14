@@ -75,6 +75,122 @@ class CourseAccessEnquiryAdminListApiTest extends TestCase
             ]);
     }
 
+
+    public function testCourseAccessEnquiryAdminListWithOrder(): void
+    {
+        CourseAccessEnquiry::query()->delete();
+
+        $course1 = Course::factory()->create();
+        $course2 = Course::factory()->create();
+
+        $user1 = $this->makeStudent();
+        $user2 = $this->makeStudent();
+
+        $enquiry1 = CourseAccessEnquiry::factory()->create([
+            'user_id' => $user1->getKey(),
+            'course_id' => $course1->getKey(),
+            'status' => EnquiryStatusEnum::APPROVED,
+            'created_at' => '2021-01-01 00:00:00'
+        ]);
+
+        $enquiry2 = CourseAccessEnquiry::factory()->create([
+            'user_id' => $user2->getKey(),
+            'course_id' => $course2->getKey(),
+            'status' => EnquiryStatusEnum::PENDING,
+            'created_at' => '2021-01-02 00:00:00'
+        ]);
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'id',
+                'order' => 'desc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry2->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'id',
+                'order' => 'asc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry1->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'course_id',
+                'order' => 'desc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry2->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'course_id',
+                'order' => 'asc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry1->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'user_id',
+                'order' => 'desc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry2->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'user_id',
+                'order' => 'asc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry1->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'created_at',
+                'order' => 'desc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry2->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'created_at',
+                'order' => 'asc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry1->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'status',
+                'order' => 'desc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry2->getKey());
+
+        $response = $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->json('GET', 'api/admin/course-access-enquiries', [
+                'order_by' => 'status',
+                'order' => 'asc',
+            ]);
+
+        $this->assertTrue($response->json('data.0.id') === $enquiry1->getKey());
+    }
+
     public function adminFilterDataProvider(): array
     {
         return [

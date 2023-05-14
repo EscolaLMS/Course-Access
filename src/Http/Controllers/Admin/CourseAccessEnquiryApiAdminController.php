@@ -22,7 +22,12 @@ class CourseAccessEnquiryApiAdminController extends EscolaLmsBaseController impl
 
     public function list(AdminListCourseAccessEnquiryRequest $request): JsonResponse
     {
-        $result = $this->service->findAll($request->getCriteriaDto(), $request->getPaginationDto());
+        $result = $this->service->findAll(
+            $request->getCriteriaDto(),
+            $request->getPaginationDto(),
+            $request->getOrderDto(),
+            $request->get('per_page', 20)
+        );
 
         return $this->sendResponseForResource(CourseAccessEnquiryResource::collection($result));
     }
