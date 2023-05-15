@@ -58,6 +58,22 @@ interface CourseAccessEnquiryApiAdminSwagger
      *              enum={"pending", "approved"}
      *          ),
      *      ),
+     *     @OA\Parameter(
+     *          name="order",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *     @OA\Parameter(
+     *          name="order_by",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successfull operation",

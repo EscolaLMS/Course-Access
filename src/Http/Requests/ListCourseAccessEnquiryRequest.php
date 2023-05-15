@@ -2,6 +2,7 @@
 
 namespace EscolaLms\CourseAccess\Http\Requests;
 
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Dtos\PaginationDto;
 use EscolaLms\CourseAccess\Dtos\CriteriaDto;
 use EscolaLms\CourseAccess\Models\CourseAccessEnquiry;
@@ -28,5 +29,10 @@ class ListCourseAccessEnquiryRequest extends FormRequest
     public function getPaginationDto(): PaginationDto
     {
         return PaginationDto::instantiateFromRequest($this);
+    }
+
+    public function getOrderDto(): OrderDto
+    {
+        return OrderDto::instantiateFromRequest($this);
     }
 }
