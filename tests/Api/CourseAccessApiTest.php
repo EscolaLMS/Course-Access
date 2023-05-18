@@ -212,17 +212,33 @@ class CourseAccessApiTest extends TestCase
 
     public function testGetMyCourseIds(): void
     {
+        $courses = Course::factory()->count(10)->create();
         $student = $this->makeStudent();
 
         $this->actingAs($student, 'api')->getJson('api/courses/my')
             ->assertOk()
             ->assertJsonCount(0, 'data.ids');
 
-        $this->course->users()->sync($student);
+        $courses->get(2)->users()->sync($student);
+
+        $parentGroup = Group::factory()->create();
+        $childGroup = Group::factory()
+            ->state(['parent_id' => $parentGroup->getKey()])
+            ->create();
+        $parentGroup->users()->sync($student);
+        $courses->get(4)->groups()->sync($childGroup);
+
+        $otherGroup = Group::factory()->create();
+        $otherGroup->users()->sync($student);
+        $courses->get(6)->groups()->sync($otherGroup);
 
         $this->actingAs($student, 'api')->getJson('api/courses/my')
             ->assertOk()
-            ->assertJsonFragment( ['ids' => [$this->course->getKey()]]);
+            ->assertJsonFragment( ['ids' => [
+                $courses->get(2)->getKey(),
+                $courses->get(4)->getKey(),
+                $courses->get(6)->getKey(),
+            ]]);
     }
 
     private function assertUserCanReadProgram(User $user, Course $course): void
