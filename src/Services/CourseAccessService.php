@@ -2,6 +2,8 @@
 
 namespace EscolaLms\CourseAccess\Services;
 
+use EscolaLms\Auth\Models\Group;
+use EscolaLms\Auth\Models\GroupUser;
 use EscolaLms\Core\Models\User;
 use EscolaLms\CourseAccess\Services\Contracts\CourseAccessServiceContract;
 use EscolaLms\Courses\Events\CourseAccessStarted;
@@ -9,7 +11,9 @@ use EscolaLms\Courses\Events\CourseAssigned;
 use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Courses\Events\CourseUnassigned;
 use EscolaLms\CourseAccess\Models\Course;
+use EscolaLms\Courses\Models\CourseGroupPivot;
 use EscolaLms\Courses\Models\CourseUserPivot;
+use Illuminate\Support\Collection;
 
 class CourseAccessService implements CourseAccessServiceContract
 {
@@ -57,7 +61,22 @@ class CourseAccessService implements CourseAccessServiceContract
 
     public function getUserCourseIds(int $userId): array
     {
-        return CourseUserPivot::where('user_id', $userId)->pluck('course_id')->toArray();
+        $userGroupIds = GroupUser::where('user_id', $userId)->pluck('group_id');
+        $childGroupIds = $this->getChildGroups($userGroupIds);
+
+        return CourseUserPivot::where('user_id', $userId)->pluck('course_id')
+            ->concat(CourseGroupPivot::whereIn('group_id', $userGroupIds->concat($childGroupIds))->pluck('course_id'))
+            ->unique()
+            ->toArray();
+    }
+
+    private function getChildGroups(Collection $groupIds): Collection
+    {
+        $childGroups = Group::whereIn('parent_id', $groupIds)->pluck('id');
+        if (!$childGroups->isEmpty()) {
+            $childGroups->concat($this->getChildGroups($childGroups));
+        }
+        return $childGroups;
     }
 
     private function dispatchEventForUsersAttachedToCourse(Course $course, array $users = []): void
