@@ -2,6 +2,7 @@
 
 namespace EscolaLms\CourseAccess\Services;
 
+use EscolaLms\Auth\Enums\SettingStatusEnum;
 use EscolaLms\Auth\Models\User;
 use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Dtos\PaginationDto;
@@ -10,6 +11,7 @@ use EscolaLms\CourseAccess\Dtos\CourseAccessEnquiry\CreateCourseAccessEnquiryDto
 use EscolaLms\CourseAccess\Dtos\CriteriaDto;
 use EscolaLms\CourseAccess\Enum\CourseAccessPermissionEnum;
 use EscolaLms\CourseAccess\Enum\EnquiryStatusEnum;
+use EscolaLms\CourseAccess\EscolaLmsCourseAccessServiceProvider;
 use EscolaLms\CourseAccess\Events\CourseAccessEnquiryAdminCreatedEvent;
 use EscolaLms\CourseAccess\Events\CourseAccessEnquiryStudentCreatedEvent;
 use EscolaLms\CourseAccess\Exceptions\EnquiryAlreadyExistsException;
@@ -17,6 +19,7 @@ use EscolaLms\CourseAccess\Models\CourseAccessEnquiry;
 use EscolaLms\CourseAccess\Repositories\Contracts\CourseAccessEnquiryRepositoryContract;
 use EscolaLms\CourseAccess\Services\Contracts\CourseAccessEnquiryServiceContract;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Config;
 
 class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
 {
@@ -61,6 +64,10 @@ class CourseAccessEnquiryService implements CourseAccessEnquiryServiceContract
         $entity = $this->repository->create($dto->toArray());
         $this->dispatchEventToAdminsAboutCreatingCourseAccessEnquiry($entity);
         event(new CourseAccessEnquiryStudentCreatedEvent($entity->user, $entity));
+
+        if (Config::get(EscolaLmsCourseAccessServiceProvider::CONFIG_KEY . '.auto_accept_access_request', SettingStatusEnum::DISABLED) === SettingStatusEnum::ENABLED) {
+            $this->approve($entity);
+        }
 
         return $entity;
     }

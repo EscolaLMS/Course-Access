@@ -3,6 +3,7 @@
 namespace EscolaLms\CourseAccess;
 
 use EscolaLms\CourseAccess\Providers\AuthServiceProvider;
+use EscolaLms\CourseAccess\Providers\SettingsServiceProvider;
 use EscolaLms\CourseAccess\Repositories\Contracts\CourseAccessEnquiryRepositoryContract;
 use EscolaLms\CourseAccess\Repositories\CourseAccessEnquiryRepository;
 use EscolaLms\CourseAccess\Services\Contracts\CourseAccessEnquiryServiceContract;
@@ -16,6 +17,7 @@ use Illuminate\Support\ServiceProvider;
  */
 class EscolaLmsCourseAccessServiceProvider extends ServiceProvider
 {
+    const CONFIG_KEY = 'escolalms_course_access';
     public const SERVICES = [
         CourseAccessServiceContract::class => CourseAccessService::class,
         CourseAccessEnquiryServiceContract::class => CourseAccessEnquiryService::class,
@@ -36,5 +38,6 @@ class EscolaLmsCourseAccessServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(AuthServiceProvider::class);
+        $this->app->register(SettingsServiceProvider::class);
     }
 }
