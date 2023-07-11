@@ -1,6 +1,6 @@
 # Admin panel documentation
 
-The CourseAccess package is designed to handle access management for courses.
+The Course Access package is designed to handle access management for courses.
 It provides a set of functions that are used both in the Admin Panel and on the Front App.
 
 ## Course Access
