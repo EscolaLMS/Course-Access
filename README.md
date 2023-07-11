@@ -69,6 +69,9 @@ sequenceDiagram
         else Administrator remove request
             Administrator ->> AdminPanel: Access request remove
             AdminPanel ->> Backend: Remove access request
+        else Setting auto_accept_access_request is true
+            Backend ->> Backend: Grant access to course
+            Backend ->> Student: Send access confirmation
         end
     else Request is invalid
         Backend -->> FrontApp: Send invalid request notification
