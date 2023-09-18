@@ -25,3 +25,22 @@ You can also remove the request.
 In the Settings tab, you will find an option that allows all requests submitted by users to be automatically approved.
 
 ![Settings](https://github.com/EscolaLMS/Course-Access/assets/59456825/c3706bfb-3982-42c3-afb9-acddb64e32e2)
+
+Automation can be used in the case of providing free access to a course, requiring only a request for course access. If we do not set the automatic function in the options, all course access requests must be approved by authorized individuals.
+
+## Access to the course from the user's perspective.
+
+The view of a access request from the Frontend of the platform looks as follows:
+
+![image](https://github.com/EscolaLMS/Course-Access/assets/108077902/be3b4dfd-5bd3-4806-9479-15ad38ccb5ae)
+
+Please note that the user must be logged into the Frontend of the platform for the access request button to be visible in the course selection panel.
+
+The user can leave additional information that will allow the access-granting person to have additional contact or information justifying the request for course access.
+
+![image](https://github.com/EscolaLMS/Course-Access/assets/108077902/a733c3a4-1c6c-494d-af32-14bd8331f6fa)
+
+After filling in the contact information, the button changes to a message indicating that the access request has been sent. At this point, the person authorized to grant access can either accept or reject the access request.
+
+![image](https://github.com/EscolaLMS/Course-Access/assets/108077902/613012a1-d067-4305-871d-2b88324b7c7c)
+
