@@ -189,25 +189,35 @@ class CourseAccessApiTest extends TestCase
                 'message' => __('Course is not activated yet.'),
             ]);
 
-        $unactivatedCourse2 = Course::factory()->create([
+        $publishedInFuture = Course::factory()->create([
             'status' => CourseStatusEnum::PUBLISHED,
             'active_from' => now()->addHour(),
             'active_to' => now()->addDay(),
         ]);
 
-        $unactivatedCourse2->users()->sync($student->getKey());
+        $publishedInFuture->users()->sync($student->getKey());
 
-        $this->actingAs($student, 'api')->getJson('/api/courses/' . $unactivatedCourse2->getKey() . '/program')
+        $this->actingAs($student, 'api')->getJson('/api/courses/' . $publishedInFuture->getKey() . '/program')
             ->assertJson([
                 'success' => false,
                 'message' => __('Course is not activated yet.'),
             ]);
 
-        $unactivatedCourse2->update([
+        $activeCourse = Course::factory()->create([
+            'status' => CourseStatusEnum::PUBLISHED,
+            'active_from' => now()->addHour(),
+            'active_to' => now()->addDay(),
+        ]);
+
+        $activeCourse->users()->sync($student->getKey());
+
+        $activeCourse->update([
+            'status' => CourseStatusEnum::PUBLISHED,
             'active_from' => now()->subHour(),
             'active_to' => now()->addDay(),
         ]);
-        $this->assertUserCanReadProgram($student, $unactivatedCourse2);
+
+        $this->assertUserCanReadProgram($student, $activeCourse);
     }
 
     public function testGetMyCourseIds(): void
