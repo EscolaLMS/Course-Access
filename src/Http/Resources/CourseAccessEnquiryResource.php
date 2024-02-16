@@ -39,9 +39,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      ),
  * )
  *
- */
-
-/**
  * @mixin CourseAccessEnquiry
  */
 class CourseAccessEnquiryResource extends JsonResource

@@ -20,9 +20,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *      ),
  * )
  *
- */
-
-/**
  * @mixin Course
  */
 class CourseShortResource extends JsonResource
