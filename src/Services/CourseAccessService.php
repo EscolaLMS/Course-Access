@@ -79,6 +79,7 @@ class CourseAccessService implements CourseAccessServiceContract
         return $courseUserIds
             ->concat($courseGroupIds)
             ->unique()
+            ->values()
             ->toArray();
     }
 
