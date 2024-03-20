@@ -12,6 +12,7 @@ use EscolaLms\Courses\Events\CourseAccessStarted;
 use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\CourseAccess\Http\Resources\UserGroupResource;
 use EscolaLms\CourseAccess\Models\Course;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
@@ -248,6 +249,31 @@ class CourseAccessApiTest extends TestCase
                 $courses->get(2)->getKey(),
                 $courses->get(4)->getKey(),
                 $courses->get(6)->getKey(),
+            ]]);
+    }
+
+
+    public function testGetMyCourseIdsFiltered(): void
+    {
+        $courses = Course::factory()->count(10)->create();
+        $student = $this->makeStudent();
+
+        $this->actingAs($student, 'api')->getJson('api/courses/my')
+            ->assertOk()
+            ->assertJsonCount(0, 'data.ids');
+
+        $courses->get(2)->users()->sync([$student->getKey() => ['end_date' => Carbon::now()->subDay()]]);
+        $courses->get(4)->users()->sync([$student->getKey() => ['end_date' => Carbon::now()->addDay()]]);
+        $courses->get(6)->users()->sync($student);
+
+        $this->actingAs($student, 'api')->getJson('api/courses/my?active=1')
+            ->assertOk()
+            ->assertJsonFragment(['ids' => [
+                $courses->get(4)->getKey(),
+                $courses->get(6)->getKey(),
+            ]])
+            ->assertJsonMissing(['ids' => [
+                $courses->get(2)->getKey(),
             ]]);
     }
 

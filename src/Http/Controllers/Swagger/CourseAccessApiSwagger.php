@@ -3,6 +3,7 @@
 namespace EscolaLms\CourseAccess\Http\Controllers\Swagger;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 interface CourseAccessApiSwagger
 {
@@ -15,6 +16,14 @@ interface CourseAccessApiSwagger
      *      security={
      *          {"passport": {}},
      *      },
+     *      @OA\Parameter(
+     *          name="active",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              enum={0,1},
+     *          ),
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="successful operation",
@@ -49,5 +58,5 @@ interface CourseAccessApiSwagger
      *      )
      * )
      */
-    public function getMyCourseIds(): JsonResponse;
+    public function getMyCourseIds(Request $request): JsonResponse;
 }

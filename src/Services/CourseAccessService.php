@@ -13,6 +13,8 @@ use EscolaLms\Courses\Events\CourseUnassigned;
 use EscolaLms\CourseAccess\Models\Course;
 use EscolaLms\Courses\Models\CourseGroupPivot;
 use EscolaLms\Courses\Models\CourseUserPivot;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class CourseAccessService implements CourseAccessServiceContract
@@ -59,13 +61,23 @@ class CourseAccessService implements CourseAccessServiceContract
         $course->groups()->sync($groups);
     }
 
-    public function getUserCourseIds(int $userId): array
+    public function getUserCourseIds(int $userId, ?bool $active = null): array
     {
         $userGroupIds = GroupUser::where('user_id', $userId)->pluck('group_id');
         $childGroupIds = $this->getChildGroups($userGroupIds);
 
-        return CourseUserPivot::where('user_id', $userId)->pluck('course_id')
-            ->concat(CourseGroupPivot::whereIn('group_id', $userGroupIds->concat($childGroupIds))->pluck('course_id'))
+        $courseUserIds = CourseUserPivot::query()
+            ->where('user_id', $userId)
+            ->when($active, fn(Builder $query) => $query
+                ->whereNull('end_date')
+                ->orWhereDate('end_date', '>=', Carbon::now())
+            )
+            ->pluck('course_id');
+
+        $courseGroupIds = CourseGroupPivot::whereIn('group_id', $userGroupIds->concat($childGroupIds))->pluck('course_id');
+
+        return $courseUserIds
+            ->concat($courseGroupIds)
             ->unique()
             ->toArray();
     }
