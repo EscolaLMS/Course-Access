@@ -16,15 +16,15 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
         });
 
         Route::prefix('course-access-enquiries')->group(function () {
-            Route::get(null, [CourseAccessEnquiryApiAdminController::class, 'list']);
+            Route::get('', [CourseAccessEnquiryApiAdminController::class, 'list']);
             Route::delete('{id}', [CourseAccessEnquiryApiAdminController::class, 'delete']);
             Route::post('approve/{id}', [CourseAccessEnquiryApiAdminController::class, 'approve']);
         });
     });
 
     Route::prefix('course-access-enquiries')->group(function () {
-        Route::get(null, [CourseAccessEnquiryApiController::class, 'list']);
-        Route::post(null, [CourseAccessEnquiryApiController::class, 'create']);
+        Route::get('', [CourseAccessEnquiryApiController::class, 'list']);
+        Route::post('', [CourseAccessEnquiryApiController::class, 'create']);
         Route::delete('{id}', [CourseAccessEnquiryApiController::class, 'delete']);
     });
 

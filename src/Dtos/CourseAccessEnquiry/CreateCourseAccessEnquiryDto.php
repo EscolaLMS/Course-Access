@@ -10,7 +10,7 @@ class CreateCourseAccessEnquiryDto extends CourseAccessEnquiryDto implements Ins
 {
     public static function instantiateFromRequest(Request $request): self
     {
-        return new static(
+        return new self(
             $request->input('course_id'),
             auth()->id(),
             $request->input('data', []),

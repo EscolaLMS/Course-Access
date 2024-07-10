@@ -2,6 +2,7 @@
 
 namespace EscolaLms\CourseAccess\Services\Contracts;
 
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Dtos\PaginationDto;
 use EscolaLms\CourseAccess\Dtos\CourseAccessEnquiry\CreateCourseAccessEnquiryDto;
 use EscolaLms\CourseAccess\Dtos\CriteriaDto;
@@ -13,7 +14,7 @@ interface CourseAccessEnquiryServiceContract
 {
     public function findByUser(CriteriaDto $criteriaDto, PaginationDto $paginationDto, int $userId): LengthAwarePaginator;
 
-    public function findAll(CriteriaDto $criteriaDto, PaginationDto $paginationDto): LengthAwarePaginator;
+    public function findAll(CriteriaDto $criteriaDto, PaginationDto $paginationDto, ?OrderDto $orderDto = null, ?int $perPage = 20): LengthAwarePaginator;
 
     /**
      * @throws EnquiryAlreadyExistsException

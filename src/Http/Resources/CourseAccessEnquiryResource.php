@@ -47,7 +47,7 @@ class CourseAccessEnquiryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
+            'created_at' => $this->resource->created_at,
             'course' => CourseShortResource::make($this->course),
             'user' => UserShortResource::make($this->user),
             'status' => $this->status,

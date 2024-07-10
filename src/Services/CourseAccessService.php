@@ -95,7 +95,7 @@ class CourseAccessService implements CourseAccessServiceContract
     private function dispatchEventForUsersAttachedToCourse(Course $course, array $users = []): void
     {
         foreach ($users as $attached) {
-            /** @var User $user */
+            /** @var User|null $user */
             $user = is_int($attached) ? User::find($attached) : $attached;
             if ($user) {
                 event(new CourseAssigned($user, $course));
@@ -107,7 +107,7 @@ class CourseAccessService implements CourseAccessServiceContract
     private function dispatchEventForUsersDetachedFromCourse(Course $course, array $users = []): void
     {
         foreach ($users as $detached) {
-            /** @var User $user */
+            /** @var User|null $user */
             $user = is_int($detached) ? User::find($detached) : $detached;
             if ($user) {
                 event(new CourseUnassigned($user, $course));
