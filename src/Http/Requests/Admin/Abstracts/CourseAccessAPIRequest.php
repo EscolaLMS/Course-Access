@@ -34,6 +34,8 @@ abstract class CourseAccessAPIRequest extends FormRequest
 
     private function getCourseId(): int
     {
-        return $this->route('id');
+        /** @var int $id */
+        $id = $this->route('id');
+        return $id;
     }
 }
